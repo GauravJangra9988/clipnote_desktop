@@ -1,67 +1,55 @@
 package main
 
 import (
-	"clipnote/desktop/cmd"
+	"clipnote/desktop/user"
 	"fmt"
-	"time"
+	"log"
 
-	"github.com/go-vgo/robotgo"
-	"github.com/go-vgo/robotgo/clipboard"
-	hook "github.com/robotn/gohook"
+	"github.com/spf13/cobra"
 )
 
 func main() {
 
-	fmt.Println("Clipboard monitor running")
-	fmt.Println("Select text anywhere, then press Ctrl + Q")
-
-	evChan := hook.Start()
-	defer hook.End()
-
-	ctrlPress := false
-
-	for ev := range evChan {
-
-		switch ev.Kind {
-
-		case hook.KeyDown:
-			if ev.Rawcode == 162 {
-				ctrlPress = true
-				fmt.Println("ctrlpress true")
-
-			}
-
-			if ev.Rawcode == 81 && ctrlPress {
-				fmt.Println("ctrl + q detected")
-
-				robotgo.KeyTap("c", "ctrl")
-				fmt.Println("text copied")
-
-				go func() {
-					time.Sleep(1500 * time.Millisecond)
-
-					text, err := clipboard.ReadAll()
-					if err != nil {
-						fmt.Println("Clipboard read error", err)
-					}
-					if text == "" {
-						fmt.Println("No text found nothing was selected")
-						return
-					}
-					fmt.Println(text)
-					cmd.SendServer(text)
-				}()
-
-			}
-
-		case hook.KeyUp:
-			if ev.Rawcode == 162 {
-				ctrlPress = false
-				fmt.Println("ctrlpress false")
-			}
-
-		}
-
+	var rootCmd = &cobra.Command{
+		Use:   "clipnote",
+		Short: "Clipnote CLI",
+		Long:  `Clipnote CLI tool to copy`,
 	}
 
+	rootCmd.AddCommand(loginCmd)
+	rootCmd.AddCommand(startCmd)
+	rootCmd.AddCommand(stopCmd)
+
+	if err := rootCmd.Execute(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+var loginCmd = &cobra.Command{
+	Use:   "login",
+	Short: "Login to Clipnote",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("login cmd initiated")
+		err := user.Login()
+		if err != nil {
+			fmt.Println(err)
+		}
+
+	},
+}
+
+var startCmd = &cobra.Command{
+	Use:   "start",
+	Short: "Start Clipnote service",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("clipnote service started")
+	},
+}
+
+var stopCmd = &cobra.Command{
+	Use:   "stop",
+	Short: "Stop Clipnote service",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("Clipnote sevice stopped")
+	},
 }
