@@ -1,7 +1,7 @@
 package main
 
 import (
-	"clipnote/desktop/user"
+	"clipnote/desktop/cmd/user"
 	"fmt"
 	"log"
 
@@ -21,7 +21,7 @@ func main() {
 	rootCmd.AddCommand(stopCmd)
 
 	if err := rootCmd.Execute(); err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 }
 
@@ -42,7 +42,9 @@ var startCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Start Clipnote service",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("clipnote service started")
+		log.Println("clipnote service started")
+
+		fmt.Println("clipnote service started in background")
 	},
 }
 
@@ -50,6 +52,7 @@ var stopCmd = &cobra.Command{
 	Use:   "stop",
 	Short: "Stop Clipnote service",
 	Run: func(cmd *cobra.Command, args []string) {
+
 		fmt.Println("Clipnote sevice stopped")
 	},
 }

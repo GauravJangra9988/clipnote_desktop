@@ -5,9 +5,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+
 	"net/http"
 	"os"
 	"strings"
+
+	"clipnote/desktop/cmd/token"
 )
 
 type LoginResponse struct {
@@ -35,9 +38,16 @@ func Login() error {
 	jsonData, _ := json.Marshal(payload)
 
 	res, err := http.Post("http://localhost:8080/login", "application/json", bytes.NewBuffer(jsonData))
+
 	if err != nil {
 		return err
 	}
+
+	if res.StatusCode != 200 {
+		fmt.Println("statuscode", res.StatusCode)
+		return nil
+	}
+
 	defer res.Body.Close()
 
 	var result LoginResponse
@@ -45,6 +55,8 @@ func Login() error {
 
 	fmt.Println(result.Message)
 	fmt.Println(result.Token)
+
+	token.SaveToken(result.Token)
 
 	return nil
 

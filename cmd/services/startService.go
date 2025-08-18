@@ -1,7 +1,8 @@
-package cmd
+package services
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/go-vgo/robotgo"
@@ -9,10 +10,10 @@ import (
 	hook "github.com/robotn/gohook"
 )
 
-func StartService() {
+func StartClipnoteReading() {
 
-	fmt.Println("Clipboard monitor running")
-	fmt.Println("Select text anywhere, then press Ctrl + Q")
+	log.Println("Clipboard monitor running")
+	log.Println("Select text anywhere, then press Ctrl + Q")
 
 	evChan := hook.Start()
 	defer hook.End()
@@ -26,12 +27,12 @@ func StartService() {
 		case hook.KeyDown:
 			if ev.Rawcode == 162 {
 				ctrlPress = true
-				fmt.Println("ctrlpress true")
+				log.Println("ctrlpress true")
 
 			}
 
 			if ev.Rawcode == 81 && ctrlPress {
-				fmt.Println("ctrl + q detected")
+				log.Println("ctrl + q detected")
 
 				robotgo.KeyTap("c", "ctrl")
 				fmt.Println("text copied")
@@ -47,7 +48,7 @@ func StartService() {
 						fmt.Println("No text found nothing was selected")
 						return
 					}
-					fmt.Println(text)
+					log.Println(text)
 					SendServer(text)
 				}()
 
