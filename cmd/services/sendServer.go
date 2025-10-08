@@ -34,7 +34,7 @@ func SendServer(data string) {
 
 	client := http.Client{}
 
-	req, err := http.NewRequest("POST", "http://localhost:8080/save", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "http://56.228.21.202:8080/save", bytes.NewBuffer(jsonData))
 	if err != nil {
 		log.Println(err)
 		return

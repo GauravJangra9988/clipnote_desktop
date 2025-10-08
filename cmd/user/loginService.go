@@ -37,7 +37,7 @@ func Login() error {
 
 	jsonData, _ := json.Marshal(payload)
 
-	res, err := http.Post("http://localhost:8080/login", "application/json", bytes.NewBuffer(jsonData))
+	res, err := http.Post("http://56.228.21.202:8080/login", "application/json", bytes.NewBuffer(jsonData))
 
 	if err != nil {
 		return err
