@@ -5,6 +5,7 @@ go 1.24.4
 require (
 	github.com/getlantern/systray v1.2.2
 	github.com/go-vgo/robotgo v0.110.8
+	github.com/joho/godotenv v1.5.1
 	github.com/robotn/gohook v0.42.2
 	github.com/spf13/cobra v1.9.1
 )

@@ -20,6 +20,8 @@ type LoginResponse struct {
 
 func Login() error {
 
+	BE_URL := os.Getenv("BE_URL")
+
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Print("Enter email: ")
@@ -37,7 +39,9 @@ func Login() error {
 
 	jsonData, _ := json.Marshal(payload)
 
-	res, err := http.Post("http://56.228.21.202:8080/login", "application/json", bytes.NewBuffer(jsonData))
+	loginEndpoint := fmt.Sprintf("%s/login", BE_URL)
+
+	res, err := http.Post(loginEndpoint, "application/json", bytes.NewBuffer(jsonData))
 
 	if err != nil {
 		return err

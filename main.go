@@ -10,12 +10,18 @@ import (
 
 	"syscall"
 
+	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"
 )
 
 var background bool
 
 func main() {
+
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error laoding .env: %s", err)
+	}
 
 	var rootCmd = &cobra.Command{
 		Use:   "clipnote",

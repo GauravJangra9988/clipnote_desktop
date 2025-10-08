@@ -4,12 +4,16 @@ import (
 	"bytes"
 	"clipnote/desktop/cmd/token"
 	"encoding/json"
+	"fmt"
+	"os"
 
 	"log"
 	"net/http"
 )
 
 func SendServer(data string) {
+
+	BE_URL := os.Getenv("BE_URL")
 
 	type ClipboardData struct {
 		Data string `json:"data"`
@@ -34,7 +38,9 @@ func SendServer(data string) {
 
 	client := http.Client{}
 
-	req, err := http.NewRequest("POST", "http://56.228.21.202:8080/save", bytes.NewBuffer(jsonData))
+	saveEndpoint := fmt.Sprintf("%s/save", BE_URL)
+
+	req, err := http.NewRequest("POST", saveEndpoint, bytes.NewBuffer(jsonData))
 	if err != nil {
 		log.Println(err)
 		return
